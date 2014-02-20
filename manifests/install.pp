@@ -1,19 +1,19 @@
 # presseding and installation of keyboard-configuration (private)
 class keyboard_config::install {
 
-  ensure_resource ('file', '/root/preseed', {'ensure' => 'directory'})
+  ensure_resource ('file', '/var/local/debconf', {'ensure' => 'directory'})
 
-  file { '/root/preseed/keyboard_config.preseed':
+  file { '/var/local/debconf/keyboard_config.preseed':
     content => template('keyboard_config/preseed.erb'),
     mode    => '0600',
     backup  => false,
-    require => File['/root/preseed'],
+    require => File['/var/local/debconf'],
   }
 
   package { $keyboard_config::params::package_name:
     ensure       => installed,
-    responsefile => '/root/preseed/keyboard_config.preseed',
-    require      => File['/root/preseed/keyboard_config.preseed'],
+    responsefile => '/var/local/debconf/keyboard_config.preseed',
+    require      => File['/var/local/debconf/keyboard_config.preseed'],
   }
 
 }
